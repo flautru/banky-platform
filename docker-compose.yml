@@ -1,6 +1,17 @@
-version: '3.8'
-
 services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: bankydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - banky-net
+
   discovery-service:
     build: ./discovery-service
     ports:
@@ -23,6 +34,12 @@ services:
       - "8081:8081"
     depends_on:
       - discovery-service
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bankydb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+    command: [ "java", "-jar", "app.jar" ]
     restart: on-failure
     networks:
       - banky-net
@@ -30,3 +47,5 @@ services:
 networks:
   banky-net:
     driver: bridge
+volumes:
+  pgdata:

@@ -45,6 +45,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.1.Final</version> <!-- ou version compatible avec ta stack Jakarta -->
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
