@@ -44,6 +44,22 @@ services:
     networks:
       - banky-net
 
+  account-service:
+    build: ./account-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery-service
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bankydb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+    command: [ "java", "-jar", "app.jar" ]
+    restart: on-failure
+    networks:
+      - banky-net
+
 networks:
   banky-net:
     driver: bridge
